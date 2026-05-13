@@ -1,15 +1,13 @@
 # Helana_-_Margrethe
   DAM Exam 2026 by Helena and Cecilie Margrethe
 
-
-
+––––––––––
 
 *About the repository*
   
   This repository contains our exam portfolio for the Digital Archives and Methods F26 course. The portfolio consists of selected assignments completed throughout the semester, as well as our final project.
 
-
-
+––––––––––
 
 *Repository Stucture* 
 
@@ -25,8 +23,7 @@ The portfolio includes the following assignments:
 
   *Final Project* Dystopian Literature and Societal Anxiety during the Second World War and the Cold War
 
-
-
+––––––––––
 
 *Final Project* 
  
@@ -35,8 +32,7 @@ The portfolio includes the following assignments:
   We conduct a sentiment analysis to examine how themes such as surveillance, fear, propaganda, oppression, and political control reflect societal anxieties during periods of conflicts.
   Through this project, we aim to explore how literature can function as a reflection of society and historical tensions. 
 
-
-
+––––––––––
 
 *Hypothis*
  
@@ -44,15 +40,13 @@ The portfolio includes the following assignments:
 
   These patterns may support the interpretation that Orwell's fiction reflects anxieties about totalitarianism and the ideological conflicts that shaped the Cold War.
 
-
-
+––––––––––
 
 *Methods and Tools*
  
   The project primarily uses: R, MANGLER 
 
-
-
+––––––––––
 
 *Authors*
 
@@ -60,8 +54,7 @@ The portfolio includes the following assignments:
   
   Cecilie Margrethe Nielsen 
 
-
-
+––––––––––
 
 *Course Information*
   
