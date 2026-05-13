@@ -3,7 +3,7 @@
 
 ––––––––––
 
-*About the repository*
+**About the repository**
   
   This repository contains our exam portfolio for the Digital Archives and Methods F26 course. The portfolio consists of selected assignments completed throughout the semester, as well as our final project.
 
