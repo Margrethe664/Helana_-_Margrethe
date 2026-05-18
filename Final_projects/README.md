@@ -47,12 +47,10 @@ World War II (1939–1945);
   Fall of the Berlin Wall (1989); 
   Collapse of the Soviet Union (1991); 
 
-Why we chose this?
-
-Literature 
+Why we chose this literature
   
   We selected these works because they reflect major political, technological, and social anxieties from the period 1939–1991, especially those connected to World War II and the Cold War. The literature explores themes such as totalitarianism, surveillance, nuclear destruction, consumerism, gender oppression, and the loss of individual freedom, which makes the novels valuable historical sources for understanding Western fears and debates during the twentieth century. We specifically chose a Western perspective, as most of the authors were writing from Western Europe or North America and were influenced by Western democratic societies and Cold War tensions. Together, the books show how dystopian literature developed over time in response to changing global conflicts and political concerns.
 
-Events 
+Why we chose these events
   
   We selected these historical events because they represent key political, military, and technological developments between 1939 and 1991 that shaped Western society and influenced dystopian literature. The events highlight important themes such as war, nuclear fear, ideological conflict, surveillance, propaganda, and technological progress, which are central topics in many of the novels we analyse. By including both World War II and major Cold War events, we are able to connect the literature to the historical context in which it was written. We also chose events that reflect a primarily Western perspective, focusing on the tensions between the Western bloc and the Soviet Union. Together, the events help explain how historical fears and global conflicts were reflected in twentieth-century dystopian fiction.
