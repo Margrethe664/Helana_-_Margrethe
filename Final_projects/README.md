@@ -1,7 +1,7 @@
 DATA FOR OUR TIMELINE  
 
 Literature 
-  Swastika Night (1937); 
+Swastika Night (1937); 
   Darkness at Noon (1940); 
   Kallocain (1940); 
   Animal Farm (1945); 
@@ -25,7 +25,7 @@ Literature
   The Handmaid’s Tale (1985)
 
 Events 
-  World War II (1939–1945); 
+World War II (1939–1945); 
   German invasion of Poland (1939); 
   Atomic Bombings of Hiroshima and Nagasaki (1945); 
   Truman Doctrine (1947); 
