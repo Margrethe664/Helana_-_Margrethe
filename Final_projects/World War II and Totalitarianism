@@ -8,8 +8,8 @@ ceciliemargrethe
 library(ggplot2)
 
 # Colors 
-event_red <- "#ff1f1f"       # bright red
-literature_blue <- "#0047AB" # cobalt blue
+event_red <- "#D00000"       # strong red 
+literature_blue <- "#0038A8" # dark blue
 
 # Literature data
 literature <- data.frame(
