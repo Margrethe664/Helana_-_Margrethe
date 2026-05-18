@@ -1,7 +1,6 @@
 ThirdTimeline.R
 ceciliemargrethe
 2026-05-18
-
 # Propaganda, Mass Media and Manipulation
 
 # Load package 
@@ -39,17 +38,20 @@ literature3 <- data.frame(
 events3 <- data.frame(
   title = c(
     "Truman Doctrine (1947)",
+    "Start of CIA (1947)",
     "Berlin Wall (1961)",
     "Cuban Missile Crisis (1962)"
   ),
   
   start = c(
     1947,
+    1947,
     1961,
     1962
   ),
   
   end = c(
+    1947,
     1947,
     1961,
     1962
@@ -58,7 +60,8 @@ events3 <- data.frame(
   y = c(
     -2,
     -3,
-    -4
+    -4,
+    -5
   )
 )
 
@@ -217,4 +220,3 @@ theme_minimal(base_size = 14) +
       size = 12
     )
 )
-
