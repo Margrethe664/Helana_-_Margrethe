@@ -1,49 +1,49 @@
 DATA FOR OUR TIMELINE  
 
 Literature 
-  Swastika Night (1937)
-  Darkness at Noon (1940)
-  Kallocain (1940)
-  Animal Farm (1945)
-  1984 (1949)
-  The Space Merchants (1952)
-  Fahrenheit 451 (1953)
-  The Chrysalids (1955)
-  The Chrysalids (1955)
-  The Death of Grass (1956)
-  On the Beach (1957)
-  Brave New World Revisited (1958)
-  Alas, Babylon (1959)
-  A Clockwork Orange (1962)
-  The Wanting Seed (1962)
-  The Penultimate Truth (1964)
-  Do Androids Dream of Electric Sheep? (1968)
-  Ubik (1969)
-  High-Rise (1975)
-  Woman on the Edge of Time (1976)
-  Neuromancer (1984)
+  Swastika Night (1937); 
+  Darkness at Noon (1940); 
+  Kallocain (1940); 
+  Animal Farm (1945); 
+  1984 (1949); 
+  The Space Merchants (1952); 
+  Fahrenheit 451 (1953); 
+  The Chrysalids (1955); 
+  The Chrysalids (1955); 
+  The Death of Grass (1956); 
+  On the Beach (1957); 
+  Brave New World Revisited (1958); 
+  Alas, Babylon (1959); 
+  A Clockwork Orange (1962); 
+  The Wanting Seed (1962); 
+  The Penultimate Truth (1964); 
+  Do Androids Dream of Electric Sheep? (1968); 
+  Ubik (1969); 
+  High-Rise (1975); 
+  Woman on the Edge of Time (1976); 
+  Neuromancer (1984); 
   The Handmaid’s Tale (1985)
 
 Events 
-  World War II (1939–1945)
-  German invasion of Poland (1939)
-  Atomic Bombings of Hiroshima and Nagasaki (1945) 
-  Truman Doctrine (1947)
-  CIA's establishment (1947)
-  Berlin Blockade (1948–1949)
-  Korean War (1950–1953)
-  Launch of Sputnik 1 (1957) 
-  First man in space (1961)
-  Construction of the Berlin Wall (1961)
-  Cuban Missile Crisis (1962)
-  U.S. involvement in the Vietnam War (1965)
-  Vietnam War (1955–1975)
-  Apollo 11 moon landing (1969) 
-  Watergate Scandal (1972–1975)
-  Apollo-Soyuz test project (1975)
-  Soviet invasion of Afghanistan (1979)
-  Fall of the Berlin Wall (1989)
-  Collapse of the Soviet Union (1991)
+  World War II (1939–1945); 
+  German invasion of Poland (1939); 
+  Atomic Bombings of Hiroshima and Nagasaki (1945); 
+  Truman Doctrine (1947); 
+  CIA's establishment (1947); 
+  Berlin Blockade (1948–1949); 
+  Korean War (1950–1953); 
+  Launch of Sputnik 1 (1957); 
+  First man in space (1961); 
+  Construction of the Berlin Wall (1961); 
+  Cuban Missile Crisis (1962); 
+  U.S. involvement in the Vietnam War (1965); 
+  Vietnam War (1955–1975); 
+  Apollo 11 moon landing (1969); 
+  Watergate Scandal (1972–1975); 
+  Apollo-Soyuz test project (1975); 
+  Soviet invasion of Afghanistan (1979); 
+  Fall of the Berlin Wall (1989); 
+  Collapse of the Soviet Union (1991); 
 
 WHY WE CHOSE THIS
 
