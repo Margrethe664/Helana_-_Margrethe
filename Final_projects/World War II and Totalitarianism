@@ -1,0 +1,252 @@
+FirstTimeline.R
+ceciliemargrethe
+2026-05-18
+
+# World War II and Totalitarianism
+
+# Load package 
+library(ggplot2)
+
+# Colors 
+event_red <- "#ff1f1f"       # bright red
+literature_blue <- "#0047AB" # cobalt blue
+
+# Literature data
+literature <- data.frame(
+  title = c(
+    "Swastika Night (1937)",
+    "Darkness at Noon (1940)",
+    "Kallocain (1940)",
+    "Animal Farm (1945)",
+    "1984 (1949)"
+  ),
+  
+  year = c(
+    1937,
+    1940,
+    1940,
+    1945,
+    1949
+  ),
+  
+  y = c(
+    4,
+    3,
+    2,
+    4,
+    3
+  )
+) 
+
+# Event data
+events <- data.frame(
+  title = c(
+    "German invasion of Poland (1939)",
+    "World War II (1939–1945)",
+    "Truman Doctrine (1947)",
+    "Berlin Blockade (1948–1949)"
+  ),
+  
+  start = c(
+    1939,
+    1939,
+    1947,
+    1948
+  ),
+  
+  end = c(
+    1939,
+    1945,
+    1947,
+    1949
+  ),
+  
+  y = c(
+    -2,
+    -3,
+    -4,
+    -2
+  )
+)
+
+# Creating timeline
+
+# Background periods 
+ggplot()+
+  
+  annotate(
+    "rect",
+    xmin = 1939,
+    xmax = 1945,
+    ymin = -5,
+    ymax = 5,
+    alpha = 0.08,
+    fill = event_red
+  ) +
+  
+  annotate(
+    "rect",
+    xmin = 1948,
+    xmax = 1949,
+    ymin = -5,
+    ymax = 5,
+    alpha = 0.05,
+    fill = event_red
+  ) +
+
+# Main timeline
+geom_hline(
+  yintercept = 0,
+  size = 1.2,
+  color = "black"
+) +
+  
+# Event lines
+geom_segment(
+  data = events,
+  aes(
+    x = start,
+    xend = end,
+    y = 0,
+    yend = 0
+  ),
+  size = 4,
+  color = event_red
+) +
+  
+# Event points 
+geom_point(
+  data = events,
+  aes(
+    x = start,
+    y = 0
+  ),
+  size = 4,
+  color = event_red
+) +
+  
+# Literature points 
+geom_point(
+  data = literature,
+  aes(
+    x = year,
+    y = 0
+  ),
+  size = 4,
+  color = literature_blue
+) +
+  
+# Lines to literature points 
+geom_segment(
+  data = literature,
+  aes(
+    x = year,
+    xend = year,
+    y = 0,
+    yend = y - 0.2
+  ),
+  color = literature_blue,
+  linetype = "dashed"
+) +
+  
+# Lines to event points 
+geom_segment(
+  data = events,
+  aes(
+    x = start,
+    xend = start,
+    y = 0,
+    yend = y + 0.2
+  ),
+  color = event_red,
+  linetype = "dashed"
+) +
+  
+# Literature labels 
+geom_text(
+  data = literature,
+  aes(
+    x = year,
+    y = y,
+    label = title
+  ),
+  color = literature_blue,
+  size = 4,
+  fontface = "bold"
+) +
+  
+# Event labels 
+geom_text(
+  data = events,
+  aes(
+    x = start,
+    y = y,
+    label = title
+  ),
+  color = event_red,
+  size = 4,
+  fontface = "bold"
+) +
+  
+# Category labels 
+annotate(
+  "text",
+  x = 1937,
+  y = 4.7,
+  label = "Literature",
+  size = 5,
+  fontface = "bold",
+  color = "black"
+) +
+  
+  annotate(
+    "text",
+    x = 1937,
+    y = -4.7,
+    label = "Events",
+    size = 5,
+    fontface = "bold",
+    color = "black"
+  ) +
+  
+# Axis 
+scale_x_continuous(
+  breaks = seq(1937, 1949, 1),
+  limits = c(1936.5, 1949.5)
+) +
+  
+  ylim(-5, 5) +
+  
+# Titles 
+labs(
+  title = "World War II and Totalitarianism",
+  subtitle = "Historical events and dystopian literature",
+  x = "Year",
+  y = NULL
+) +
+  
+# Theme
+theme_minimal(base_size = 14) +
+  
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    
+    plot.title = element_text(
+      face = "bold",
+      size = 20
+    ),
+    
+    plot.subtitle = element_text(
+      size = 12
+    )
+  )
+
+## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once per session.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
