@@ -47,7 +47,7 @@ World War II (1939–1945);
   Fall of the Berlin Wall (1989); 
   Collapse of the Soviet Union (1991); 
 
-_____
+
 WHY WE CHOSE THIS
 
 Literature 
