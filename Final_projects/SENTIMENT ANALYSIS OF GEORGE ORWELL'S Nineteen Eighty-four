@@ -1,0 +1,594 @@
+# SENTIMENT ANALYSIS OF GEORGE ORWELL'S Nineteen Eighty-four
+# Authors: Helena Hymøller Jensen and Cecilie Margrethe Nielsen
+
+# Introduction
+# The following script does text mining and sentiment analysis on George Orwell's dystopian novel Nineteen Eighty-four
+# We've decided to use three sentiment lexicons, which includes: 
+  # Bing: which classifies words as either positive and negative
+  ## NRC: which classifies words into emotions
+  ### AFINN: which gives words a numerical sentiment score from negative to positive
+
+
+# Installing packages:
+install.packages(c(
+  "readtext",
+  "tidyverse",
+  "tidytext",
+  "stringr",
+  "ggplot2",
+  "scales",
+  "wordcloud",
+  "wordcloud2",
+  "RColorBrewer"
+))
+
+# Loading libraries
+library(readtext)
+library(tidyverse)
+library(tidytext)
+library(stringr)
+library(ggplot2)
+library(scales)
+library(wordcloud)
+library(wordcloud2)
+library(dplyr)
+library(RColorBrewer)
+
+# _________________________________________________
+
+# Importing the entirety of George Orwell's 1984
+# The following code readtext() imports the document, and code tibble() converts it into a tidy data frame
+
+file_path <- "data/1984.docx"
+
+text_data <- readtext(file_path)
+
+data_1984 <- tibble(
+  text = text_data$text
+)
+
+# _________________________________________________
+
+# Cleaning and tokenizing the dataset for further analysis
+
+# Removing line breaks and extra spaces
+# Converting uppercase words into lowercase words
+clean_1984 <- data_1984 %>%
+  mutate(
+    text = text %>%
+      str_replace_all("\\n", " ") %>%
+      str_replace_all("\\s+", " ") %>%
+      str_to_lower() %>%
+      str_trim()
+  )
+
+# Splitting the text into individual words by tokenizing the datatset
+words_1984 <- clean_1984 %>%
+  unnest_tokens(word, text)
+
+# Removing common words lacking deeper meaning
+data("stop_words")
+
+# Removing numbers and very short words lacking deeper meaning
+clean_words_1984 <- words_1984 %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(!str_detect(word, "^[0-9]+$")) %>%
+  filter(str_length(word) > 2)
+
+# _________________________________________________
+
+# Looking into the frequency of words by counting how often each word appear in the dataset
+# Word Frequency can help identify repeated themes, names and concepts
+word_freq_1984 <- clean_words_1984 %>%
+  count(word, sort = TRUE)
+
+# Looking into the twenty-five most frequent words in George Orwell's 1984
+head(word_freq_1984, 25)
+
+# Plotting the the twenty-five most frequent words in George Orwell's 1984
+The_twentyfive_most_frequent_words_1984 <- word_freq_1984 %>%
+  slice_max(n, n = 25) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col(fill = "#D00000") +
+  coord_flip() +
+  labs(
+    title = "The twenty-five most frequent words in George Orwell's 1984",
+    x = NULL,
+    y = "Frequency"
+  ) +
+  theme_minimal()
+
+The_twentyfive_most_frequent_words_1984
+
+# Saving the visualization
+ggsave(
+  "The_twentyfive_most_frequent_words_1984.png",
+  plot = The_twentyfive_most_frequent_words_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# Creating a Wordcloud visualizing the most frequent words in George Orwell's 1984"
+# Higher word frequency means stronger visual emphasis
+
+# The first section prepares the data for the word cloud
+# The first hundred most frequent words are selected from the dataset, and are assigned a color based on how often it appears
+wordcloud_data <- word_freq %>%
+  slice_max(n, n = 100) %>%
+  mutate(
+    color = case_when(
+      n < 50 ~ "#666666",      # Below 100 = dark grey
+      n < 100 ~ "#000000",      # 100–149 = black
+      n < 150 ~ "#FFD60A",      # 150–199 = yellow
+      n < 200 ~ "#D00000",      # 200–249 = bright red
+      n < 250 ~ "#D4A017",      # 250–299 = mustard
+      n < 300 ~ "#1D4ED8",      # 300–349 = cobalt blue
+      TRUE ~ "#0038A8"          # 350+ = dark blue
+    )
+  )
+
+# Creating a wordcloud using wordcloud2
+# The word frequency is displayed through both size and color
+wordcloud_1984 <- wordcloud2(
+  data = wordcloud_data[, c("word", "n")],
+  color = wordcloud_data$color,
+  size = 0.8,
+  backgroundColor = "white"
+)
+
+# Displaying he visualization
+wordcloud_1984
+
+# Saving the visualization
+library(htmlwidgets)
+saveWidget(
+  wordcloud_1984,
+  "wordcloud_1984.html",
+  selfcontained = TRUE
+)
+
+# _________________________________________________
+
+# BING SENTIMENT ANALYSIS
+# The BING lexicon classifies words either positive or negative
+
+# The words of George Orwell's 1984 are matched with the Bing dictionary
+# Words not found in the dictionary are excluded
+
+# Loading the BING sentiment analysis
+bing <- get_sentiments("bing")
+
+# Matching words from the datatset to the BING lexicon
+bing_sentiment_words <- clean_words_1984 %>%
+  inner_join(bing, by = "word")
+
+bing_summary <- bing_sentiment_words %>%
+  count(sentiment) %>%
+  mutate(percent = n / sum(n))
+
+# Creating an overview of whether the dataset contains more positive or negative words
+print(bing_summary)
+
+# Visualizing the summary
+# The following plot displays the positive and negative sentiment of the dataset
+BING_sentiment_1984 <- bing_summary %>%
+  ggplot(aes(x = sentiment, y = n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(
+    aes(label = paste0(n, " words\n", percent(percent, accuracy = 1))),
+    vjust = -0.3
+  ) +
+  scale_fill_manual(values = c(
+    "negative" = "#D00000",
+    "positive" = "#0057D9"
+  )) +
+  labs(
+    title = "Positive and Negative Sentiment in George Orwell's 1984",
+    subtitle = "The BING lexicon",
+    x = NULL,
+    y = "Number of sentiment words"
+  ) +
+  theme_minimal()
+
+# Displaying the visualization
+BING_sentiment_1984
+
+# Saving the ggplot
+ggsave(
+  "BING_sentiment_1984.png",
+  plot = BING_sentiment_1984,
+  width = 8,
+  height = 12,
+  dpi = 300
+)
+
+# Looking into the most common positive and negative words of 1984
+# The following plot displays which specific positive and negative words appear most often
+common_words_1984 <- bing_sentiment_words %>%
+  count(word, sentiment, sort = TRUE) %>%
+  group_by(sentiment) %>%
+  slice_max(n, n = 12, with_ties = FALSE) %>%
+  ungroup() %>%
+  mutate(word = reorder_within(word, n, sentiment)) %>%
+  ggplot(aes(x = word, y = n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  facet_wrap(~ sentiment, scales = "free_y") +
+  scale_x_reordered() +
+  scale_fill_manual(values = c(
+    "negative" = "#D00000",
+    "positive" = "#0057D9"
+  )) +
+  labs(
+    title = "The most common Positive and Negative Words in George Orwell's 1984",
+    x = NULL,
+    y = "Frequency"
+  ) +
+  theme_minimal()
+
+# Displaying the visualization
+common_words_1984
+
+# Saving the plot
+ggsave(
+  "common_words_1984.png",
+  plot = common_words_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# _________________________________________________
+
+# Creating a sentiment wordcloud
+# The wordcloud includes words which the BING lexicon recognizes as sentiment words
+# The red words are recognized as negative and the blue words are recognized as positive
+# The size of each word represent the frequency of occurance
+
+#Counting how often each sentiment word appears
+sentiment_freq <- bing_sentiment_words %>%
+  count(word, sentiment, sort = TRUE)
+
+# Assigning colors based on sentiment classification
+word_colors <- ifelse(
+  sentiment_freq$sentiment == "positive",
+  "#0057D9",
+  "#D00000"
+)
+
+
+# Saving the wordcloud as a PNG.file
+png(
+  "BING_sentiment_wordcloud_1984.png",
+  width = 1200,
+  height = 1000,
+  res = 150
+)
+
+# Creating the sentiment wordcloud
+wordcloud(
+  words = sentiment_freq$word,
+  freq = sentiment_freq$n,
+  max.words = 250,
+  random.order = FALSE,
+  rot.per = 0.15,
+  scale = c(5, 0.5),
+  colors = word_colors,
+  family = "serif"
+)
+
+# Creating a legend to help accentuate the representation of the colors
+legend(
+  "topright",
+  legend = c("Positive", "Negative"),
+  col = c("#0057D9", "#D00000"),
+  pch = 15,
+  cex = 1
+)
+
+# Finishing off and saving the PNG.file
+dev.off()
+
+# _________________________________________________
+
+# NRC SENTIMENT ANALYSIS
+# The NRC gives a detailed emotional analysis since it includes categories such as fear, anger, trust and joy
+
+# Loading the NRC sentiment lexicon
+nrc <- get_sentiments("nrc")
+
+# Matching the words of the dataset to the NRC lexicon
+nrc_words <- clean_words_1984 %>%
+  inner_join(nrc, by = "word")
+
+# Counting the amount of words in each sentiment category
+nrc_counts <- nrc_words %>%
+  count(sentiment, sort = TRUE)
+
+#Creating an overview of the frequncy within the sentiment categories
+print(nrc_counts)
+
+# Creating a visualization
+sentiment_ranking_1984 <- ggplot(data = nrc_counts, aes(x = reorder(sentiment, n), y = n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  scale_fill_manual(values = c(
+    "fear" = "#666666",         # dark red
+    "anger" = "#000000",        # black
+    "sadness" = "#0038A8",      # blue
+    "disgust" = "#001F54",      # dark blue
+    "surprise" = "#B0B0B0",     # grey
+    "anticipation" = "#8B0000", # dark red
+    "trust" = "#FFD60A",        # bright yellow
+    "joy" = "#D4A017",          # mustard
+    "positive" = "#0057D9",     # blue
+    "negative" = "#D00000"      # red
+  )) +
+  labs(
+    title = "Sentiment Ranking of George Orwell's 1984",
+    subtitle = "The NRC sentiment categories ranked by frequency",
+    x = "Sentiment",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+
+# Displaying the visualization
+sentiment_ranking_1984
+
+# Saving the ggplot
+ggsave(
+  "sentiment_ranking_1984.png",
+  plot = sentiment_ranking_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# Looking into words excluded from NRC lexicon
+excluded_words <- orwell_words_clean %>%
+  anti_join(get_sentiments("nrc"), by = "word") %>%
+  count(word, sort = TRUE)
+
+# Getting an overview of the most frequent words of the dataset, which are not included in the NRC sentiment lexicon
+excluded_words %>%
+  slice_head(n = 20)
+
+# Creating a visualization of the most common of the excluded words
+excluded_words_NRC_1984 <- excluded_words %>%
+  slice_head(n = 15) %>%
+  ggplot(aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "#D00000") +
+  coord_flip() +
+  labs(
+    title = "The most frequent words excluded from the NRC lexicon",
+    subtitle = "Words not recognized by the NRC lexicon",
+    x = "Word",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+
+# Saving the ggplot
+ggsave(
+  "excluded_words_NRC_1984.png",
+  plot = excluded_words_NRC_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# Looking into the NRC emotions, but excluding the broad positive and negative categories
+# The objective is to recognize which emotional categories dominate the novel
+nrc_emotions <- nrc_words %>%
+  filter(!sentiment %in% c("positive", "negative"))
+
+# The following code counts how many words belong in each emotional category, and sorts them from highest to lowest frequency
+emotion_summary <- nrc_emotions %>%
+  count(sentiment, sort = TRUE)
+
+# Printing the summary to inspectwhich emotions appear most often in the dataset
+print(emotion_summary)
+
+# Creating a visualization showing the dominant emotional categories in George Orwell's 1984
+dominant_emotional_categories_1984 <- emotion_summary %>%
+  mutate(sentiment = reorder(sentiment, n)) %>%
+  ggplot(aes(x = sentiment, y = n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  scale_fill_manual(values = c(
+    "fear" = "#666666",         # dark grey
+    "anger" = "#000000",        # black
+    "sadness" = "#0038A8",      # blue
+    "disgust" = "#001F54",      # dark blue
+    "surprise" = "#B0B0B0",     # grey
+    "anticipation" = "#8B0000", # dark red
+    "trust" = "#FFD60A",        # bright yellow
+    "joy" = "#D4A017"           # mustard
+  )) +
+  labs(
+    title = "The most dominant emotional categories in George Orwell's 1984",
+    subtitle = "The NRC emotion lexicon",
+    x = "Emotion category",
+    y = "Number of matched words"
+  ) +
+  theme_minimal(base_size = 13)
+
+# Displaying the visualization
+dominant_emotional_categories_1984
+
+# Saving the visualization
+ggsave(
+  "dominant_emotional_categories_1984.png",
+  plot = dominant_emotional_categories_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# _________________________________________________
+
+# Looking into the msot significant and words of each NRC sentiment category
+# The objective of the following section is to identify which specific words contribute most strongly to each emotional category of George Orwell's 1984
+
+# Locating words by both frequency and sentiment
+# Keeping the five most frequent words for each emotional category
+nrc_top_words <- nrc_words %>%
+  count(word, sentiment, sort = TRUE) %>%
+  group_by(sentiment) %>%
+  slice_max(n, n = 5, with_ties = FALSE) %>%
+  ungroup()
+
+# Creating the visualization displaying the top five most common words for each emotional category
+nrc_common_words_1984 <- ggplot(
+  data = nrc_top_words,
+  aes(x = reorder(word, n), y = n, fill = sentiment)
+) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ sentiment, ncol = 2, scales = "free") +
+  coord_flip() +
+  scale_fill_manual(values = c(
+    "fear" = "#666666",         # dark grey
+    "anger" = "#000000",        # black
+    "sadness" = "#0038A8",      # blue
+    "disgust" = "#001F54",      # dark blue
+    "surprise" = "#B0B0B0",     # grey
+    "anticipation" = "#8B0000", # dark red
+    "trust" = "#FFD60A",        # bright yellow
+    "joy" = "#D4A017",          # mustard
+    "positive" = "#0057D9",     # blue
+    "negative" = "#D00000"      # red
+  )) +
+  theme_minimal() +
+  labs(
+    title = "NRC Sentiment Words in George Orwell's 1984",
+    subtitle = "The top five words for each emotional category",
+    x = "Word",
+    y = "Count"
+  ) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    strip.text = element_text(face = "bold")
+  )
+
+# Displaying the visualization
+nrc_common_words_1984
+
+# Saving the visualization
+ggsave(
+  "nrc_common_words_1984.png",
+  plot = nrc_common_words_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# _________________________________________________
+
+# AFINN SENTIMENT ANALYSIS
+# The AFINN lexicon assigns each word a numerical sentiment score
+# The following code inspects the significance of sentiment of each word
+
+# Matching cleaned words from George Orwell's 1984 with the AFINN lexicon
+afinn_scores <- orwell_words_clean %>%
+  inner_join(get_sentiments("afinn"), by = "word")
+
+# Counting the amount of words with each sentiment score
+# Ranking from the most negative words to the most positive words
+afinn_ranking <- afinn_scores %>%
+  count(value, sort = TRUE)
+
+# Converting value to factor
+afinn_ranking$value <- as.factor(afinn_ranking$value)
+
+# Printing th full ranking allowing direct inspection of the sentiment distribution
+print(afinn_ranking)
+
+# Creating the visualization showing the sentiment scores of George Orwell's 1984
+sentiment_scores_1984 <- ggplot(afinn_ranking, aes(x = factor(value), y = n, fill = value)) +
+  geom_col() +
+  scale_fill_manual(values = c(
+    "-5" = "#5C0000",   # darkest red
+    "-4" = "#8B0000",   # dark red
+    "-3" = "#B22222",   # firebrick red
+    "-2" = "#D00000",   # strong red
+    "-1" = "#FF4D4D",   # lighter red
+    "0"  = "#D9D9D9",   # neutral grey
+    "1"  = "#B3D9FF",   # light blue
+    "2"  = "#66B2FF",   # brighter blue
+    "3"  = "#1E90FF",   # strong blue
+    "4"  = "#0057D9",   # cobalt blue
+    "5"  = "#0038A8"    # dark blue
+  )) +
+  labs(
+    title = "AFINN Sentiment Score Distribution in George Orwell's 1984",
+    subtitle = "Ranking words by sentiment score from negative (-5) to positive (+5)",
+    x = "Sentiment Score",
+    y = "Word Count"
+  ) +
+  theme_minimal()
+
+# Displaying the visualization
+sentiment_scores_1984
+
+# Saving the visualization
+ggsave(
+  "sentiment_scores_1984.png",
+  plot = sentiment_scores_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# The following section calculates the average sentiment score of the text
+afinn_scores %>%
+  summarise(
+    Mean = mean(value),
+    Median = median(value),
+    Minimum = min(value),
+    Maximum = max(value)
+  )
+
+# _________________________________________________
+
+# Investigating the AFINN sentiment scores
+# The following section focuses specifically on words given the AFINN sentiment score of -2, since it is the most common of the dataset
+# By isolating these words, it becomes easier to inspect and understand which specififc terms help create the dystopian atmosphere in George Orwell's 1984
+
+# Filtering the score of interest
+# Counting the frequency of each word
+# Sorting them from most frequent to least frequent
+minus2_words <- afinn_scores %>%
+  filter(value == -2) %>%
+  count(word, sort = TRUE)
+
+# Printing the full list to inspect the words of the sentiment score
+print(minus2_words)
+
+# Creating the visualization displaying the most frequent words of the AFINN sentiment score
+AFINN_minus2_1984 <- minus2_words %>%
+  slice_head(n = 10) %>%
+  ggplot(aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "#D00000") +
+  coord_flip() +
+  labs(
+    title = "The most frequent words of the AFINN sentiment score -2 in George Orwell's 1984",
+    subtitle = "Moderately negative sentiment words",
+    x = "Word",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+
+# Displaying the visualization
+AFINN_minus2_1984
+
+# Saving the visualization
+ggsave(
+  "AFINN_minus2_1984.png",
+  plot = AFINN_minus2_1984,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+# _________________________________________________
