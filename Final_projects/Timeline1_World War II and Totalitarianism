@@ -244,9 +244,3 @@ theme_minimal(base_size = 14) +
       size = 12
     )
   )
-
-## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once per session.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.
